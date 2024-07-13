@@ -11,7 +11,7 @@ export default function Page404(){
         <div className="h-screen w-screen flex justify-center items-center">
             <header className="fixed top-0 left-0 w-full z-30 bg-pd-white">
                 <nav className="py-4 px-5 md:px-6 xl:px-0 max-w-[1200px] mx-auto ">
-                    <button onClick={goBack} className="logo py-2 md:py-4 w-[20px] md:w-[30px]">
+                    <button onClick={goBack} className="logo with-opacity py-2 md:py-4 w-[20px] md:w-[30px]">
                         <NavLeft />
                     </button>
                 </nav>

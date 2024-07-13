@@ -70,11 +70,21 @@
   transition: all 5s;
 }
 
-button:hover{
-  /* opacity: .6; */
+.pd-card{
+  transition: all .4s;
 }
 
-button:active{
+.pd-card:hover{
+  box-shadow: inset 0 0 0 2px #3331;
+  padding: 4px;
+  border-radius: 12px;
+}
+
+button.with-opacity:hover{
+  opacity: .6;
+}
+
+button.with-shadow:active{
   box-shadow: 0 0 0 1px rgba(2, 2, 2, 0.5);
   transform: translate(0.5px, 0.5px);
 }
@@ -89,6 +99,10 @@ button:active{
   transition: all .4s;
   background: #0C0A00;
   color: white;
+}
+.red-to-black-border:hover{
+  transition: all .4s;
+  background: #0C0A00;
 }
 
 footer li a{

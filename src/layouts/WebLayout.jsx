@@ -54,7 +54,7 @@ export default function WebLayout({children, cartItems = null}){
                     
                     <div className="flex items-center gap-2 py-2 md:hidden">
                         <Link to="/cart"><ShoppingCart text={cartItems}/></Link>
-                        <button className="flex w-12 h-12 justify-end items-center" onClick={()=>setOpen(true)} >
+                        <button className="flex w-12 h-12 justify-end items-center with-opacity" onClick={()=>setOpen(true)} >
                             <img src={Menu} alt="" />
                         </button>
                     </div>
@@ -63,7 +63,7 @@ export default function WebLayout({children, cartItems = null}){
             <div className={`${open?'flex':'hidden'} md:hidden fixed top-0 left-0 w-screen h-screen overflow-hidden z-40 bg-pd-black/50 justify-end pd-off-canvas`}>
                 <nav className="relative right-0 w-[80%] w-max-[300px] z-40 bg-pd-white rounded-s-3xl py-2 px-4 md:px-6 xl:px-0" onBlur={()=>setOpen(false)} ref={offCanvasRef}>
                     <div className="flex justify-end py-2">
-                        <button className="flex w-12 h-12 justify-end items-center" onClick={()=>setOpen(false)}>
+                        <button className="flex w-12 h-12 justify-end items-center with-opacity" onClick={()=>setOpen(false)}>
                             <img src={Close} alt="" />
                         </button>
                     </div>

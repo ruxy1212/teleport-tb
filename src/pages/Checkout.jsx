@@ -98,7 +98,7 @@ export default function Checkout(){
                             </div>
                             <div className="pd-p leading-6 text-gray-400">Expires {card.expiryDate.replace('/', '/20')}</div>
                           </label>
-                          <button onClick={() => removeCard(index)} className="text-pd-red pd-p font-semibold">Remove</button>
+                          <button onClick={() => removeCard(index)} className="text-pd-red pd-p font-semibold with-opacity">Remove</button>
                         </div>
                         {index < cards.length - 1 && <hr className="shrink-0 my-2 h-0 border-t border-pd-black border-solid max-md:max-w-full" />}
                       </React.Fragment>
@@ -108,7 +108,7 @@ export default function Checkout(){
                 }
               </div>
               <hr className="shrink-0 mt-0 md:mt-2 h-0 border-t border-pd-black border-solid max-md:max-w-full" />
-              <button className="flex gap-4 justify-center self-start mt-0 md:mt-2 font-semibold leading-6 rounded font-montserrat" onClick={()=>setShowPayment(true)}>
+              <button className="flex gap-4 justify-center self-start mt-0 md:mt-2 font-semibold leading-6 rounded font-montserrat with-shadow" onClick={()=>setShowPayment(true)}>
                 <Plus />
                 <span>Add Payment method</span>
               </button>

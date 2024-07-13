@@ -18,7 +18,7 @@ export default function Modal({children, open, setOpen}){
             <div className="max-h-[95vh] overflow-y-auto shadow-lg border border-black border-solid bg-pd-white rounded-xl w-[380px] max-w-[90%] mx-auto">
                 <div className="p-8 leading-[150%]">
                     <div className="flex justify-end">
-                        <button onClick={()=>setOpen(false)}>
+                        <button onClick={()=>setOpen(false)} className="with-opacity">
                             <img loading="lazy" src={Close} className="self-end aspect-square"/>
                         </button>
                     </div>

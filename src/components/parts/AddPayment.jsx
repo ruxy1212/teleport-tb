@@ -48,7 +48,7 @@ export default function AddPayment({ addCard, onClose }) {
             <input type="text" placeholder="123" value={cvv} onChange={(e) => setCvv(e.target.value)} maxLength="4" required className="tracking-widest pd-p w-full px-4 py-3 mt-2 md:mt-4 rounded-sm border border-pd-black border-solid text-pd-black"/>
         </div>
         <div>
-          <button className="w-full mt-10 mb-5 py-4 px-10 flex items-center justify-center gap-2 bg-pd-red text-pd-white rounded-[3.25rem] font-medium pd-button font-montserrat">Save Card Details</button>
+          <button className="w-full mt-10 mb-5 py-4 px-10 flex items-center justify-center gap-2 bg-pd-red text-pd-white rounded-[3.25rem] font-medium pd-button font-montserrat with-shadow">Save Card Details</button>
         </div>
       </form>
         <p className="pd-p leading-6 text-neutral-500">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes.</p>

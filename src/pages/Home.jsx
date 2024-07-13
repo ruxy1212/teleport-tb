@@ -109,9 +109,10 @@ export default function Home() {
             title: product.name,
             desc: product.description,
             photo: product?.photos?.[0]?.url??'',
+            photos: product?.photos,
             price: product.current_price[0]['USD'][0],
             discount: product.current_price[0]['USD'][1]??0,
-            rating: Math.ceil(product.available_quantity/2),
+            rating: product.available_quantity,
             //feedbacks,,more images
         }
     }
@@ -177,8 +178,8 @@ export default function Home() {
                                 <h2 className="pd-h2 text-pd-black">New <span className="text-pd-red">arrival</span> for you</h2>
                             </div>
                             <div className="flex gap-5 justify-between my-auto">
-                                <button disabled={currentPage==1} className={`bg-pd-gray rounded-sm p-1 ${currentPage==1?'text-pd-mid-gray':'hover:bg-pd-red/15'}`} onClick={prevPage}><ChevronLeft /></button>
-                                <button disabled={currentPage==totalPages} className={`bg-pd-gray rounded-sm p-1 ${currentPage==totalPages?'text-pd-mid-gray':'hover:bg-pd-red/15'}`} onClick={nextPage}><ChevronRight /></button>
+                                <button disabled={currentPage==1} className={`bg-pd-gray with-shadow rounded-sm p-1 ${currentPage==1?'text-pd-mid-gray':'hover:bg-pd-red/15'}`} onClick={prevPage}><ChevronLeft /></button>
+                                <button disabled={currentPage==totalPages} className={`bg-pd-gray rounded-sm with-shadow p-1 ${currentPage==totalPages?'text-pd-mid-gray':'hover:bg-pd-red/15'}`} onClick={nextPage}><ChevronRight /></button>
                             </div>
                         </div>
                     </div> 

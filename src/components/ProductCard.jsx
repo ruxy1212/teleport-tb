@@ -3,8 +3,7 @@ import Cart from './icons/Cart'
 import Rating from './Rating'
 import ProdFavorite from './icons/ProdFavorite'
 import { useState } from 'react';
-import Modal from './Modal';
-import ModalProduct from './parts/ModalProduct';
+import Product from '../pages/Product';
 
 export default function ProductCard({product, likedProducts, handleLike, addToCart}){
     const baseURL = import.meta.env.VITE_TIMBU_PROD_IMG_BASE_URL;
@@ -15,11 +14,11 @@ export default function ProductCard({product, likedProducts, handleLike, addToCa
     };
     return (
         <div className="flex flex-col justify-between">
-            <div className="flex-col flex">
+            <div className="flex-col flex relative pt-12">
+                <div className={`w-full z-50 absolute top-0 flex flex-col justify-center items-end p-4 px-6 ${loaded?'block':'hidden'}`}>
+                    <button className="with-shadow" style={{ color: likedProducts.includes(product.id) ? "red" : "black" }} onClick={() => handleLike(product)}><ProdFavorite/></button>
+                </div>
                 <div onClick={()=>setShowProduct(true)} className="cursor-pointer flex flex-col px-6 py-4 w-full rounded-2xl shadow-lg border border-pd-white backdrop-blur-sm">
-                    <div className={`flex flex-col justify-center items-end py-2.5 ${loaded?'block':'hidden'}`}>
-                        <button style={{ color: likedProducts.includes(product.id) ? "red" : "black" }} onClick={() => handleLike(product)}><ProdFavorite/></button>
-                    </div>
                     <div className={`flex flex-col justify-center px-7 mt-2 ${loaded?'block':'hidden'}`}>
                         <img onLoad={handleImageLoad} src={baseURL+product.photo} className="w-full hover:scale-110 transition-all duration-500 object-cover" />
                     </div>
@@ -46,14 +45,12 @@ export default function ProductCard({product, likedProducts, handleLike, addToCa
                 }
             </div>
             <div>
-            <button disabled={!loaded} className={`${loaded?'':'bg-pd-gray hover:bg-pd-gray transition-none text-pd-gray active:shadow-none hover:text-pd-gray'} white-to-black-border flex gap-2.5 justify-center px-9 py-4 mt-5 text-base font-medium leading-5 text-black border border-black border-solid rounded-[52px]`} onClick={() => addToCart(product)}>
+            <button disabled={!loaded} className={`${loaded?'':'bg-pd-gray hover:bg-pd-gray transition-none text-pd-gray active:shadow-none hover:text-pd-gray'} white-to-black-border flex gap-2.5 justify-center px-9 py-4 mt-5 text-base font-medium leading-5 text-black border border-black border-solid rounded-[52px] with-shadow`} onClick={() => addToCart(product)}>
                     <Cart />
                     <p>Add to Cart</p>
                 </button> 
             </div>
-            <Modal open={showProduct} setOpen={setShowProduct}>
-                <ModalProduct productId={product.id} onClose={() => setShowProduct(false)}></ModalProduct>
-            </Modal>
+            <Product open={showProduct} setOpen={setShowProduct} product={product} addToCart={addToCart}/>
         </div>
     )
 }

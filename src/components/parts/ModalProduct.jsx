@@ -9,7 +9,7 @@ import axios from "../../../api/axios"; //"../../../../..//api/axios"
 
 export default function ModalProduct({productId}){
     const baseURL = import.meta.env.VITE_TIMBU_PROD_IMG_BASE_URL;
-    const [isError, setError] = useState(false);
+    // const [isError, setError] = useState(false);
     const [item, setItem] = useState({});
     // const [itemExtra, setItemExtra] = useState({});
     useEffect(() => {
@@ -29,11 +29,11 @@ export default function ModalProduct({productId}){
                     // console.log(product.data);
                     setItem(sanitizeProduct(product.data));
                     // setItemExtra(sanitizeExtra(product_info.data.items));
-					setError(false);
+					// setError(false);
 				}
 			}catch(error){
 				console.error("Error fetching products:", error);
-				setError(true);
+				// setError(true);
 			}
 		};
         // const sanitizeProduct = (product) => {
@@ -52,15 +52,30 @@ export default function ModalProduct({productId}){
         getProduct();
 	}, [productId]);
     const [cIndex, setCIndex] = useState(0);
+    const [fade, setFade] = useState(false);
     const prevClick = () => {
-        setCIndex((prev) =>
-            prev === 0 ? item.photos.length - 1 : prev - 1
-        );
+        // setCIndex((prev) =>
+        //     prev === 0 ? item.photos.length - 1 : prev - 1
+        // );
+        setFade(true);
+    setTimeout(() => {
+      setCIndex((prev) =>
+        prev === 0 ? item.photos.length - 1 : prev - 1
+      );
+      setFade(false);
+    }, 500); 
     };
     const nextClick = () => {
-        setCIndex((prev) =>
-            prev === item.photos.length - 1 ? 0 : prev + 1
-        );
+        setFade(true);
+    setTimeout(() => {
+      setCIndex((prevIndex) =>
+        prevIndex === item.photos.length - 1 ? 0 : prevIndex + 1
+      );
+      setFade(false);
+    }, 500);
+        // setCIndex((prev) =>
+        //     prev === item.photos.length - 1 ? 0 : prev + 1
+        // );
     };// scale-110
 
     const sanitizeProduct = (product) => {
@@ -99,15 +114,24 @@ export default function ModalProduct({productId}){
             <div className="flex-col flex">
                 <div className="cursor-pointer flex flex-col my-2 md:my-4 w-full rounded-2xl shadow-lg border border-pd-white backdrop-blur-sm">
                     <div className="flex flex-col justify-center mt-2 rounded-lg overflow-hidden relative">
-                        <div className="absolute inset-0 transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${cIndex * 100}%)` }}>
+                    <div className="relative w-64 h-64 overflow-hidden">
+                        <img
+                        src={item.photos&&item.photos.length>0?baseURL+item.photos[cIndex].url:''}
+                        alt={'item.photos[cIndex].model_name'}
+                        className={`w-full h-full object-cover transition-opacity duration-500 ${
+                            fade ? 'opacity-0' : 'opacity-100'
+                        }`}
+                        />
+                    </div>
+                        {/* <div className="absolute inset-0 transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${cIndex * 100}%)` }}>
                         {item.photos && item.photos.map((photo, index) => (
                             <img key={index} src={baseURL+photo.url} alt={photo.model_name} className="w-full h-full object-cover" />
-                        ))}
+                        ))} */}
                             {/* <img loading="lazy" src={"images/products/n"+1+".png"} className="w-full h-full object-cover"/> */}
-                        </div>
+                        {/* </div> */}
                         <span className="absolute top-1/2 flex justify-between w-full px-4 text-pd-mid-gray">
-                            <button onClick={prevClick} className="opacity-50 hover:opacity-100 text-pd-black disabled:opacity-50"><ChevronLeft/></button>
-                            <button onClick={nextClick} className="opacity-50 hover:opacity-100 text-pd-black"><ChevronRight/></button>
+                            <button onClick={prevClick} className="opacity-50 hover:opacity-100 text-pd-black disabled:opacity-50 with-shadow"><ChevronLeft/></button>
+                            <button onClick={nextClick} className="opacity-50 hover:opacity-100 text-pd-black with-shadow"><ChevronRight/></button>
                         </span>
                     </div>
                 </div>
@@ -128,7 +152,7 @@ export default function ModalProduct({productId}){
                 </div>
             </div>
             <div>
-                {/* <button className="flex gap-2.5 justify-center px-9 py-4 mt-5 text-base font-medium leading-5 text-black border border-black border-solid rounded-[52px]"  onClick={() => addToCart(product)}>
+                {/* <button className="flex gap-2.5 justify-center px-9 py-4 mt-5 text-base font-medium leading-5 text-black border border-black border-solid rounded-[52px] with-shadow"  onClick={() => addToCart(product)}>
                     <Cart />
                     <p>Add to Cart</p>
                 </button>  */}

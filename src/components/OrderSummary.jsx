@@ -60,12 +60,12 @@ export default function OrderSummary({total, discount, proceed_loc, proceed_msg,
                 <div className="relative px-4 py-2 mt-6 text-gray-400 rounded-sm border border-black border-solid">
                     <input type="text" className="w-full pr-8 border-none outline-none" placeholder="Coupon Code" value={couponCode} onChange={(e) => setCoupon(e.target.value)}/>
                     <div className="absolute w-6 top-2 right-2 aspect-square fill-white">
-                        <button onClick={applyCoupon}><Trailing /></button>
+                        <button className="with-shadow" onClick={applyCoupon}><Trailing /></button>
                     </div>
                 </div>
                 <p className={`${couponFeedback === "Coupon applied successfully!" ? "text-pd-green" : "text-pd-red"}`}>{couponFeedback}</p>
                 <div className="mt-6">
-                    <button onClick={()=>proceed(proceed_loc)} className="w-full py-4 px-9 flex items-center justify-center gap-2 bg-pd-red text-pd-white rounded-[3.25rem] font-medium pd-button font-montserrat pd-button">{proceed_msg}</button>
+                    <button onClick={()=>proceed(proceed_loc)} className="w-full py-4 px-9 flex items-center justify-center gap-2 bg-pd-red text-pd-white rounded-[3.25rem] font-medium pd-button font-montserrat pd-button with-shadow">{proceed_msg}</button>
                 </div>
             </div>
         </div>

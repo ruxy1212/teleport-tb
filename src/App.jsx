@@ -4,6 +4,7 @@ import Checkout from './pages/Checkout'
 import Cart from './pages/Cart'
 import Page404 from "./pages/Page404"
 import ScrollToTop from "./components/ScrollToTop"
+import Product from "./pages/Product"
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path='/pricing' element={<Page404 />} />
         <Route path='/company' element={<Page404 />} />
         <Route path='/page404' element={<Page404 />} />
+        <Route path="/product" element={<Product />} />
       </Routes>
     </BrowserRouter>
   )
