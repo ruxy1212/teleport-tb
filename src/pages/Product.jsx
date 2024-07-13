@@ -46,26 +46,17 @@ export default function Product({open, setOpen, product, addToCart}){
 
     const [message, setMessage] = useState(null);
     const [cIndex, setCIndex] = useState(0);
-    const [fade, setFade] = useState(false);
 
     const prevClick = () => {
-        setFade(true);
-        setTimeout(() => {
-            setCIndex((prev) =>
-                prev === 0 ? product.photos.length - 1 : prev - 1
-            );
-            setFade(false);
-        }, 500); 
+        setCIndex((prev) =>
+            prev === 0 ? product.photos.length - 1 : prev - 1
+        );
     };
 
     const nextClick = () => {
-        setFade(true);
-        setTimeout(() => {
-            setCIndex((prev) =>
-                prev === product.photos.length - 1 ? 0 : prev + 1
-            );
-            setFade(false);
-        }, 500);
+        setCIndex((prev) =>
+            prev === product.photos.length - 1 ? 0 : prev + 1
+        );
     }; 
     return (
         <div className={`${open?'flex':'hidden'} fixed top-0 left-0 w-screen h-screen z-[90] bg-pd-black/60 justify-center items-center`}>
@@ -88,7 +79,7 @@ export default function Product({open, setOpen, product, addToCart}){
                                 <div className="flex flex-col gap-4 md:gap-6 col-span-6">
                                     <div className="mt-1">
                                         <div className="flex flex-col w-full max-w-[350px] justify-center items-center p-2 rounded-xl shadow-lg backdrop-blur-sm aspect-square mt-2 md:mt-0 relative">
-                                            <img src={product.photos&&product.photos.length>0?baseURL+product.photos[cIndex].url:"images/products/n"+2+".png"} className={`rounded-xl w-full h-full object-cover transition-opacity duration-200 ${fade?'opacity-0':'opacity-100'}`}/>
+                                            <img src={product.photos&&product.photos.length>0?baseURL+product.photos[cIndex].url:"images/products/n"+2+".png"} className={`rounded-xl w-full h-full object-cover transition-opacity duration-200`}/>
                                             <span className={`${product.photos.length<2?'hidden':''} absolute top-1/2 flex justify-between w-full px-4 text-pd-mid-gray`}>
                                                 <button onClick={prevClick} className="opacity-50 hover:opacity-100 text-pd-black disabled:opacity-50 with-shadow"><ChevronLeft/></button>
                                                 <button onClick={nextClick} className="opacity-50 hover:opacity-100 text-pd-black with-shadow"><ChevronRight/></button>
@@ -99,22 +90,22 @@ export default function Product({open, setOpen, product, addToCart}){
                                         <div className="flex flex-col">
                                             <div className="flex flex-col text-2xl font-extrabold text-pd-black">
                                                 <h3 className="pd-h3 leading-8">
-                                                    {product.title}
+                                                    {product.title??'nil'}
                                                 </h3>
                                                 <p className="my-auto pd-p-18 font-bold leading-[130%]">
                                                     ${product.discount&&product.discount!=0?product.price-product.discount:product.price} 
                                                     <span className="ms-4 text-sm font-medium font-montserrat text-pd-red line-through">
                                                         {product.discount&&product.discount!=0?'$'+product.price:''}
                                                     </span>
-                                                    <span className="ms-4 font-normal text-sm text-pd-mid-gray italic">({extra.quantity_available} pcs left)</span>
+                                                    <span className="ms-4 font-normal text-sm text-pd-mid-gray italic">({extra.quantity_available??0} pcs left)</span>
                                                 </p>
                                             </div>
                                             <div className="flex gap-2.5 self-start mt-2">
                                                 <div className="flex gap-0.5 my-auto">
-                                                    <Rating amount={product.rating}/>
+                                                    <Rating amount={product.rating??0}/>
                                                 </div>
                                                 <div className="leading-7 text-black">
-                                                    (<span className="pd-p">{extra.feedbacks}</span>)
+                                                    (<span className="pd-p">{extra.feedbacks??'nil'}</span>)
                                                 </div>
                                             </div>
                                         </div>
@@ -122,26 +113,26 @@ export default function Product({open, setOpen, product, addToCart}){
                                 </div>    
                                 <div className="flex flex-col col-span-6">
                                     <div className="flex flex-col self-stretch p-8 m-auto w-full pd-p font-montserrat leading-6 bg-white rounded-xl border border-black border-solid max-md:px-5 max-md:mt-10">
-                                        <p className="pd-p-18 font-medium leading-8 text-pd-black">{product.desc}</p>
+                                        <p className="pd-p-18 font-medium leading-8 text-pd-black">{extra.description}</p>
                                         <div className="flex gap-5 justify-between mt-6 whitespace-nowrap text-pd-black">
                                                 <p>Color</p>
-                                                <p>{extra.color}</p>
+                                                <p>{extra.color??'nil'}</p>
                                             </div>
                                         <div className="flex gap-5 justify-between mt-6 whitespace-nowrap text-pd-black">
                                             <p>Capacity</p>
-                                            <p>{extra.capacity}</p>
+                                            <p>{extra.capacity??'nil'}</p>
                                         </div>
                                         <div className="flex gap-5 justify-between mt-6 text-pd-black">
                                             <p>RAM</p>
-                                            <p className="font-semibold">{extra.ram}</p>
+                                            <p className="font-semibold">{extra.ram??'nil'}</p>
                                         </div>
                                         <div className="flex gap-5 justify-between mt-6 whitespace-nowrap text-pd-black">
                                             <p>Screen Size</p>
-                                            <p>{extra.resolution}&quot;</p>
+                                            <p>{extra.resolution??0}&quot;</p>
                                         </div>
                                         <div className="flex gap-5 justify-between mt-6 text-pd-black">
                                             <p>Battery</p>
-                                            <p className="font-semibold">{extra.battery}</p>
+                                            <p className="font-semibold">{extra.battery??'nil'}</p>
                                         </div>
                                         <div className="mt-6">
                                             <button onClick={() => addToCart(product)} className="w-full py-4 px-9 flex items-center justify-center gap-2 bg-pd-red text-pd-white rounded-[3.25rem] font-medium pd-button font-montserrat pd-button red-to-black-border with-shadow"><Cart />Add to Cart</button>

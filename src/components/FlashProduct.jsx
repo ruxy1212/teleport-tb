@@ -19,7 +19,7 @@ export default function FlashProduct({product, addToCart}){
                         {loaded && <div className="flex justify-end">
                             <span className="flex justify-center items-center h-[60px] w-[135px] bg-[url('/images/callout.svg')] pd-p-18 font-bold relative bottom-[-23px] right-[-23px] text-pd-white z-10">{Math.ceil(product.discount/product.price*100)}% Off</span>
                         </div>}
-                        <img onLoad={handleImageLoad} src={baseURL+product.photo} className={`w-full hover:scale-110 transition-all duration-500 object-cover ${loaded?'block':'hidden'}`} />
+                        <img onLoad={handleImageLoad} src={baseURL+product.photo} className={` hover:scale-110 transition-all duration-500 object-cover h-[250px] w-[250px] ${loaded?'block':'hidden'}`} />
                         <div className={`h-[150px] animate-pulse bg-pd-gray flex justify-center items-center ${loaded?'hidden':'block'}`}>
                             <svg className="animate-spin w-[30px]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         </div>

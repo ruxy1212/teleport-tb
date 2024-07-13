@@ -50,13 +50,13 @@ export default function Home() {
         getProducts();
 	}, [currentPage]);
 
-    const prevPage = () => { console.log(currentPage);
+    const prevPage = () => {
         if (currentPage > 1) { 
           setCurrentPage(currentPage - 1);
         }
       };
     
-      const nextPage = () => { console.log(currentPage, totalPages);
+      const nextPage = () => {
         if (currentPage < totalPages) {
           setCurrentPage(currentPage + 1);
         }
