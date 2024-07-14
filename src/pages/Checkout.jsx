@@ -145,7 +145,7 @@ export default function Checkout(){
                 <button onClick={() => setShowBilling(true)} className="text-pd-red pd-p font-semibold with-opacity">{Object.keys(billing).length>0?'Update':'Set up'}</button>
               </div>
             </div>    
-            <OrderSummary total={price} discount={discount} proceed_loc="success" proceed_msg="Place Your Order and Pay" coupon={coupon} couponMsg={couponCode} showModal={setShowSuccess} selectedCard={selectedCard} billing={billing} setBillingValidation={setBillingValidation} setCardValidation={setCardValidation} />
+            <OrderSummary total={price} discount={discount} proceed_loc="success" proceed_msg="Place Your Order and Pay" coupon={coupon} couponMsg={couponCode} showModal={setShowSuccess} selectedCard={selectedCard} billing={billing} setBillingValidation={setBillingValidation} setCardValidation={setCardValidation} showPopup={showPopup}/>
         </div>
         {message && <Popup message={message} duration={5000} onClose={() => setMessage(null)} />}
       </div>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Trailing from './icons/Trailing';
 import { getNextWeekFriday } from '../hooks/nextWeekFriday';
 
-export default function OrderSummary({total, discount, proceed_loc, proceed_msg, coupon=0, couponMsg="", showModal=null, selectedCard=null, billing=null, setBillingValidation=null, setCardValidation=null}) {
+export default function OrderSummary({total, discount, proceed_loc, proceed_msg, coupon=0, couponMsg="", showModal=null, selectedCard=null, billing=null, setBillingValidation=null, setCardValidation=null, showPopup=null}) {
     const validCoupons = {"DISCOUNT10": 10, "SALE20": 20, "PROMO30": 30, "EREGE": 50, "RUXY": 50};
     const [couponCode, setCoupon] = useState(couponMsg);
     const [couponFeedback, setCouponFeedback] = useState("");
@@ -27,10 +27,14 @@ export default function OrderSummary({total, discount, proceed_loc, proceed_msg,
             if(selectedCard && Object.keys(billing).length>0)
                 showModal(true);
             else{
-                if(!selectedCard)
+                if(!selectedCard){
                     setCardValidation(true);
-                if(Object.keys(billing).length<1)
+                    showPopup("Please select a card for payment");
+                }
+                if(Object.keys(billing).length<1){
                     setBillingValidation(true);
+                    showPopup("Please add a billing address");
+                }
                 showModal(false);
             }
         }
@@ -96,5 +100,6 @@ OrderSummary.propTypes = {
     selectedCard: propTypes.string,
     billing: propTypes.object,
     setBillingValidation: propTypes.func,
-    setCardValidation: propTypes.func
+    setCardValidation: propTypes.func,
+    showPopup: propTypes.func
 }

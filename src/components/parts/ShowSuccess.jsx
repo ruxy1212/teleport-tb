@@ -33,7 +33,7 @@ export default function ShowSuccess({showSuccess}) {
       if (stage < stages.length - 1) {
         const timer = setTimeout(() => {
           setStage(stage + 1);
-        }, Math.random() * (4000 - 2000) + 2000);
+        }, Math.random() * (3000 - 2000) + 2000);
         return () => clearTimeout(timer);
       } else {
         const timer = setTimeout(() => {
@@ -55,7 +55,7 @@ export default function ShowSuccess({showSuccess}) {
         )}
         <h3 className="mt-12 md:mt-16 pd-h3 leading-8 text-center text-pd-black">{completed && showSuccess?'Your Order is confirmed!':'Please Hang On!'}</h3>
         <p className="pd-p mt-4 text-base leading-6 text-center text-black">{completed && showSuccess?'We’ll send you a shipping confirmation email as soon as your order ships.':stages[stage]}</p>
-        <button disabled={!(completed && showSuccess)} onClick={()=>finalize()} className={`mt-10 mb-5 py-4 px-10 flex items-center justify-center gap-2 text-pd-white rounded-[3.25rem] font-medium pd-button font-montserrat  ${completed?' bg-pd-red with-shadow':'bg-pd-black/50'}`}>Continue Shopping</button>
+        <button disabled={!(completed && showSuccess)} onClick={()=>finalize()} className={`mt-10 mb-5 py-4 px-10 flex items-center justify-center gap-2 rounded-[3.25rem] font-medium pd-button font-montserrat  ${completed?' bg-pd-red with-shadow text-pd-white':'bg-pd-black/50 text-pd-white/50'}`}>Continue Shopping</button>
     </div>
   );
 }

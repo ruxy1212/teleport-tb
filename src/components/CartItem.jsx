@@ -21,7 +21,7 @@ export default function CartItem({type, item, changeQuantity, removeItem}){
             </div>
             <div className={`${type=='single'?'pl-5':'with-at-half-md'} w-full lg:w-[43%]`}>
                 <div className="flex flex-col">
-                    <div className="flex gap-2.5 mt-0 md:mt-10 text-2xl font-extrabold text-pd-black">
+                    <div className="flex gap-2.5 mt-4 md:mt-8 text-2xl font-extrabold text-pd-black">
                         <h3 className="leading-8 pd-h3">{item.title}</h3>
                         <h3 className="my-auto pd-h3 text-right leading-[130%]">${item.price}</h3>
                     </div>
