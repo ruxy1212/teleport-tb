@@ -2,7 +2,7 @@ import propTypes from 'prop-types'
 import Cart from './icons/Cart'
 import Rating from './Rating'
 import { useState } from 'react'
-import Product from '../pages/Product'
+import Product from './Product'
 
 export default function FlashProduct({product, addToCart}){
     const baseURL = import.meta.env.VITE_TIMBU_PROD_IMG_BASE_URL;

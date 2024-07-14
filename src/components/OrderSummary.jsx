@@ -2,8 +2,9 @@ import propTypes from 'prop-types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Trailing from './icons/Trailing';
+import { getNextWeekFriday } from '../hooks/nextWeekFriday';
 
-export default function OrderSummary({total, discount, proceed_loc, proceed_msg, coupon=0, couponMsg="", showModal=null}){
+export default function OrderSummary({total, discount, proceed_loc, proceed_msg, coupon=0, couponMsg="", showModal=null, selectedCard=null, billing=null, setBillingValidation=null, setCardValidation=null, showPopup=null}) {
     const validCoupons = {"DISCOUNT10": 10, "SALE20": 20, "PROMO30": 30, "EREGE": 50, "RUXY": 50};
     const [couponCode, setCoupon] = useState(couponMsg);
     const [couponFeedback, setCouponFeedback] = useState("");
@@ -22,8 +23,23 @@ export default function OrderSummary({total, discount, proceed_loc, proceed_msg,
     const proceed = (loc) => {
         if(loc == 'payment')
             navigate("/checkout", { state: { price: total, discount: discount, coupon: couponDiscount, couponMsg: couponCode.toUpperCase()  } });
-        else showModal(true);
+        else{
+            if(selectedCard && Object.keys(billing).length>0)
+                showModal(true);
+            else{
+                if(!selectedCard){
+                    setCardValidation(true);
+                    showPopup("Please select a card for payment");
+                }
+                if(Object.keys(billing).length<1){
+                    setBillingValidation(true);
+                    showPopup("Please add a billing address");
+                }
+                showModal(false);
+            }
+        }
     };
+    const deliveryDate = getNextWeekFriday();
 
     return (
         <div className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full self-start sticky top-24">
@@ -55,7 +71,7 @@ export default function OrderSummary({total, discount, proceed_loc, proceed_msg,
                 </div>
                 <div className="flex gap-5 justify-between mt-6 text-pd-black">
                     <p>Estimated Delivery by</p>
-                    <p className="font-semibold">25 July, 2024</p>
+                    <p className="font-semibold">{deliveryDate}</p>
                 </div>
                 <div className="relative px-4 py-2 mt-6 text-gray-400 rounded-sm border border-black border-solid">
                     <input type="text" className="w-full pr-8 border-none outline-none" placeholder="Coupon Code" value={couponCode} onChange={(e) => setCoupon(e.target.value)}/>
@@ -80,5 +96,10 @@ OrderSummary.propTypes = {
     proceed_loc: propTypes.string,
     coupon: propTypes.number,
     couponMsg: propTypes.string,
-    showModal: propTypes.func
+    showModal: propTypes.func,
+    selectedCard: propTypes.string,
+    billing: propTypes.object,
+    setBillingValidation: propTypes.func,
+    setCardValidation: propTypes.func,
+    showPopup: propTypes.func
 }

@@ -4,7 +4,7 @@ import Checkout from './pages/Checkout'
 import Cart from './pages/Cart'
 import Page404 from "./pages/Page404"
 import ScrollToTop from "./components/ScrollToTop"
-import Product from "./pages/Product"
+import Product from "./components/Product"
 
 export default function App() {
   return (
