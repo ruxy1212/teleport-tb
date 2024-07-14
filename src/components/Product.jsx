@@ -1,12 +1,12 @@
 import propTypes from 'prop-types';
 import { useEffect, useState } from "react";
 import Close from "../assets/img/icons/Close.svg";
-import Popup from "../components/Popup"
-import Rating from "../components/Rating";
+import Popup from "./Popup"
+import Rating from "./Rating";
 import axios from '../../api/axios';
-import ChevronLeft from '../components/icons/ChevronLeft';
-import ChevronRight from '../components/icons/ChevronRight';
-import Cart from '../components/icons/Cart';
+import ChevronLeft from './icons/ChevronLeft';
+import ChevronRight from './icons/ChevronRight';
+import Cart from './icons/Cart';
 
 export default function Product({open, setOpen, product, addToCart}){
     const baseURL = import.meta.env.VITE_TIMBU_PROD_IMG_BASE_URL;
