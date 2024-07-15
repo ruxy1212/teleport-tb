@@ -26,8 +26,8 @@ export default function CartItem({type, item, changeQuantity, removeItem}){
                         <h3 className="my-auto pd-h3 text-right leading-[130%]">${item.price}</h3>
                     </div>
                     <div className="flex gap-2 mt-2 whitespace-nowrap pd-p font-semibold">
-                        <span className="text-pd-mid-gray">Color</span>
-                        <span className="text-pd-black">Silver</span>
+                        <span className="text-pd-mid-gray">Discount</span>
+                        <span className="text-pd-black">{item.discount>0?Math.ceil(item.discount/item.price*100)+' % Off':'nil'}</span>
                     </div>
                     <div className={`flex gap-8 mt-6 w-full whitespace-nowrap ${type=='single'?'break-at-half-lg':''}`}>
                         <div className="flex gap-10 justify-center items-center px-4 py-3 border border-black border-solid rounded-[52px] text-pd-black">
