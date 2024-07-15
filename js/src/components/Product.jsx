@@ -61,13 +61,13 @@ export default function Product({open, setOpen, product, addToCart}){
     return (
         <div className={`${open?'flex':'hidden'} fixed top-0 left-0 w-screen h-screen z-[90] bg-pd-black/60 justify-center items-center`}>
             <div className="overflow-y-auto h-screen md:h-auto my-8 md:my-0 shadow-lg border border-black border-solid bg-pd-white rounded-xl">
-                <div className="p-4 md:p-6 leading-[150%]">
-                    <div className="flex justify-end">
+                <div className="p-4 md:p-6 pt-0 leading-[150%]">
+                    <div className="flex justify-end pt-4 md:pt-6 pb-2 bg-pd-white z-20 sticky top-0 w-full">
                         <button onClick={()=>setOpen(false)} className='with-opacity'>
                             <img loading="lazy" src={Close} className="self-end aspect-square"/>
                         </button>
                     </div>
-                    <div className="max-w-[1200px] mx-auto pt-6">
+                    <div className="max-w-[1200px] mx-auto pt-4">
                         {isError ? (
                             <div className="w-[500px] max-w-[70%] mx-auto flex flex-col justify-center">
                                 <div className="h-10 w-full animate-pulse bg-pd-gray rounded-sm"></div>
