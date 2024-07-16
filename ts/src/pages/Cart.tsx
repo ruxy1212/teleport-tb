@@ -8,14 +8,30 @@ import Popup from "../components/Popup"
 import CartItem from "../components/CartItem";
 import OrderSummary from "../components/OrderSummary";
 
+type Item = {
+  desc: string;
+  discount: number;
+  id: string;
+  photo: string;
+  photos: {
+      url: string
+  }[];
+  price: number;
+  quantity: number;
+  rating: number;
+  title: string;
+}
+
 export default function Cart(){
     const InitialCart = [
-       {id:1, img:'Image.png', title:'Iphone 14 Plus', price:225.00, desc:'Latest smartphones with top-tier cameras, fast processors, and sleek designs.', rating:5, feedbacks:'125', discount: 0, quantity: 1},
+      //  {id:1, img:'Image.png', title:'Iphone 14 Plus', price:225.00, desc:'Latest smartphones with top-tier cameras, fast processors, and sleek designs.', rating:5, feedbacks:'125', discount: 0, quantity: 1},
+       {desc: "Good, long battery, immersive audio, 11.2\"", discount: 0, id: "2de14b4cc2cb4906a91e5af3505c33cd", photo: "timbu-cloud/product_vivo_pad_2_7f4ad1_3.jpg", photos: [{url: "timbu-cloud/product_vivo_pad_2_7f4ad1_3.jpg"}], price: 499, quantity: 1, rating: 4, title: "Vivo Pad 2"},
     ];
-    const [message, setMessage] = useState(null);
+
+    const [message, setMessage] = useState<string | null>(null);
     const [cartItems, setCartItems] = useLocalStorage("cartItems", InitialCart);
 
-    const changeQuantity = (product, step) => {
+    const changeQuantity = (product: Item, step: number) => {
       setCartItems((prev) =>
         prev.map((item) =>
           item.id === product.id
@@ -25,7 +41,7 @@ export default function Cart(){
       );
       showPopup(`Cart updated successfully`);
     };
-    const removeItem = (productId) => {
+    const removeItem = (productId: string) => {
       setCartItems((prev) => prev.filter((item) => item.id !== productId));
         showPopup(`Item removed from cart`);
     };
@@ -34,7 +50,7 @@ export default function Cart(){
     const getDiscount = () => 
       cartItems.reduce((totalDiscount, item) => totalDiscount + (item.discount * item.quantity), 0);
 
-    const showPopup = (message) => {
+    const showPopup = (message: string) => {
         setMessage(message);
         setTimeout(() => {
           setMessage(null);

@@ -16,6 +16,38 @@ import Popup from "../components/Popup"
 import OrderSummary from '../components/OrderSummary';
 import AddBilling from '../components/parts/AddBilling';
 
+// type Cart = {
+//   desc: string;
+//   discount: number;
+//   id: string;
+//   photo: string;
+//   photos: {
+//       url: string
+//   }[];
+//   price: number;
+//   quantity: number;
+//   rating: number;
+//   title: string;
+// }
+
+type Card = {
+  cardNumber: string,
+  cvv: string,
+  expiryDate: string
+}
+
+type Billing = {
+  firstName?: string,
+  lastName?: string,
+  email?: string,
+  phone?: string,
+  address?: string,
+}
+
+type CardTypeMap = {
+  [key: string]: string;
+};
+
 export default function Checkout(){
     const initialCards = [
       { cardNumber: "1234 5678 9012 3456", cvv: "123", expiryDate: "12/24" },
@@ -29,22 +61,22 @@ export default function Checkout(){
     const [showPayment, setShowPayment] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showBilling, setShowBilling] = useState(false);
-    const [selectedCard, setSelectedCard] = useState(null);
+    const [selectedCard, setSelectedCard] = useState<string|null>(null);
     const [billingValidation, setBillingValidation] = useState(false);
     const [cardValidation, setCardValidation] = useState(false);
     const cartItems = useLocalStorage("cartItems", []);
     const couponCode = couponMsg;
-    const [message, setMessage] = useState(null);
+    const [message, setMessage] = useState<string|null>(null);
 
-    const [cards, setCards] = useLocalStorage("cards", initialCards);
-    const [billing, setBilling] = useLocalStorage("billing", {});
+    const [cards, setCards] = useLocalStorage<Card[]>("cards", initialCards);
+    const [billing, setBilling] = useLocalStorage<Billing>("billing", {});
 
-    const addCard = (newCard) => {
+    const addCard = (newCard: Card) => {
       setCards([...cards, newCard]);
       showPopup(`Payment card added successfully`);
     };
 
-    const addBilling = (newBilling) => {
+    const addBilling = (newBilling: Billing) => {
       if(billing){
         setBilling(newBilling);
         showPopup(`Billing address added successfully`);
@@ -60,12 +92,12 @@ export default function Checkout(){
       setShowBilling(false);
     }
 
-    const removeCard = (cardIndex) => {
+    const removeCard = (cardIndex: number) => {
       setCards(cards.filter((_, index) => index !== cardIndex));
       showPopup(`Payment card removed successfully`);
     };
 
-    const showPopup = (message) => {
+    const showPopup = (message: string) => {
       setMessage(message);
       setTimeout(() => {
         setMessage(null);
@@ -100,7 +132,7 @@ export default function Checkout(){
                     <p className="text-pd-red pd-p-18 h-[50px] flex justify-center items-center">You have not added any cards yet</p>
                   ):(
                     cards.map((card, index) => {
-                        const cardType = {3: amex, 4: visa, 5: mastercard, 6: discover};
+                        const cardType: CardTypeMap = {3: amex, 4: visa, 5: mastercard, 6: discover};
                     return (
                       <React.Fragment key={index}>
                         <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full p-2 pb-0 md:pb-2">
@@ -135,7 +167,7 @@ export default function Checkout(){
                   {
                     Object.keys(billing).length > 0?(
                       <div>
-                        <p className="pd-p text-pd-black"><span className="font-semibold">{billing.firstName}</span><span className="ms-2 me-2">|</span><span>{billing.address} this is a very long text to test 1, Osaniye street</span></p>
+                        <p className="pd-p text-pd-black"><span className="font-semibold">{billing.firstName}</span><span className="ms-2 me-2">|</span><span>{billing.address}</span></p>
                         <p className="pd-p text-pd-black"><span>{billing.phone}</span><span className="ms-2 me-2">|</span><span className="font-semibold">{billing.email}</span></p>
                       </div>
                     ):(

@@ -1,8 +1,28 @@
 
-import { useState } from 'react';
-import propTypes from 'prop-types';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
-export default function AddBilling({ addBilling, onClose }) {
+type AddBillingProps = {
+  addBilling: (data: dataProps) => void,
+  onClose: () => void
+}
+
+type dataProps = {
+  firstName: string,
+  lastName: string,
+  email: string,
+  phone: string,
+  address: string,
+}
+
+interface Errors {
+  firstName?: boolean,
+  lastName?: boolean,
+  email?: boolean,
+  phone?: boolean,
+  address?: boolean,
+}
+
+export default function AddBilling(props: AddBillingProps) {
   const [data, setData] = useState({
     firstName: '',
     lastName: '',
@@ -11,9 +31,9 @@ export default function AddBilling({ addBilling, onClose }) {
     address: '',
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Errors>({});
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setData(prevData => ({
       ...prevData,
@@ -21,7 +41,7 @@ export default function AddBilling({ addBilling, onClose }) {
     }));
   };
 
-  const handleFocus = (e) => {
+  const handleFocus = (e: ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -29,11 +49,11 @@ export default function AddBilling({ addBilling, onClose }) {
     }));
   };
 
-  const submitBilling = (e) => {
+  const submitBilling = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(validateFields(data)){
-            addBilling(data);
-            onClose();
+            props.addBilling(data);
+            props.onClose();
             setData({
                 firstName: '',
                 lastName: '',
@@ -44,9 +64,9 @@ export default function AddBilling({ addBilling, onClose }) {
         }
     };
 
-    const validateFields = (payload) => {
+    const validateFields = (payload: dataProps) => {
         let verdict = true;
-        let newErrors = {};
+        const newErrors: Errors = {};
     
         if (!payload.firstName) {
           newErrors.firstName = true;
@@ -71,7 +91,7 @@ export default function AddBilling({ addBilling, onClose }) {
     
         setErrors(newErrors);
         return verdict;
-      };
+    };
 
   return (
     <div className="flex flex-col justify-between">
@@ -104,7 +124,7 @@ export default function AddBilling({ addBilling, onClose }) {
   );
 }
 
-AddBilling.propTypes = {
-  addBilling: propTypes.func,
-  onClose: propTypes.func
-}
+// AddBilling.propTypes = {
+//   addBilling: propTypes.func,
+//   onClose: propTypes.func
+// }

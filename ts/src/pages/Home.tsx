@@ -25,29 +25,50 @@ type ProductProps = {
     title: string;
     desc: string;
     photo: string;
-    photos: string[];
-    price: string;
-    discount: string;
-    rating: string;
+    photos: {url: string}[];
+    price: number;
+    discount: number;
+    rating: number;
   };
   
   type RawProduct = {
-    id: string;
     name: string;
     description: string;
+    unique_id: string;
+    url_slug: string;
+    is_available: boolean;
+    is_service: boolean;
+    previous_url_slugs: string | null;
+    unavailable: boolean;
+    unavailable_start: string | null;
+    unavailable_end: string | null;
+    id: string;
+    parent_product_id: string | null;
+    parent: string | null;
+    organization_id: string;
+    product_image: { url: string }[];
+    categories: { name: string; id: string }[];
+    date_created: string;
+    last_updated: string;
+    user_id: string;
     photos: { url: string }[];
-    current_price: { USD: [string, string] }[];
-    available_quantity: string;
+    current_price: { USD: [number | null, number | null] }[];
+    is_deleted: boolean;
+    available_quantity: number;
+    selling_price: number | null;
+    discounted_price: number | null;
+    buying_price: number | null;
+    extra_infos: string | null;
   };
 
-  type CartItem = Product & { quantity: number };
+  type CartItem = ProductProps & { quantity: number };
 
 export default function Home() {
-    const [mainProducts, setMainProducts] = useState<Product[]>([]);
-    const [flashProducts, setFlashProducts] = useState<Product[]>([]);
-    const [isError, setError] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    const [mainProducts, setMainProducts] = useState<RawProduct[]>([]);
+    const [flashProducts, setFlashProducts] = useState<RawProduct[]>([]);
+    const [isError, setError] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
     const [message, setMessage] = useState<string | null>(null);
     const [likedProducts, setLikedProducts] = useLocalStorage<string[]>("likedProducts", []);
     const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("cartItems", []);
@@ -125,16 +146,20 @@ export default function Home() {
         });
     };
 
-    const sanitizeProduct = (product: RawProduct): Product => {
+    const sanitizeProduct = (apiProduct: RawProduct): ProductProps => {
         return {
-            id: product.id, 
-            title: product.name,
-            desc: product.description,
-            photo: product?.photos?.[0]?.url??'',
-            photos: product.photos.map((photo) => photo.url),
-            price: product.current_price[0]['USD'][0],
-            discount: product.current_price[0]['USD'][1]??0,
-            rating: product.available_quantity,
+            id: apiProduct.id, 
+            title: apiProduct.name,
+            desc: apiProduct.description,
+            // photo: apiProduct?.photos?.[0]?.url??'',
+            // photos: apiProduct.photos,
+            photo: apiProduct.photos.length > 0 ? apiProduct.photos[0].url : '',
+            photos: apiProduct.photos,
+            price: apiProduct.current_price[0].USD[0] || 0,
+            discount: apiProduct.current_price[0].USD[1] || 0,
+            // price: apiProduct.current_price[0]['USD'][0],
+            // discount: apiProduct.current_price[0]['USD'][1]??0,
+            rating: apiProduct.available_quantity,
             //feedbacks,,more images
         }
     }
@@ -206,10 +231,11 @@ export default function Home() {
                         </div>
                     </div> 
                     <div className="max-w-[1200px] mx-auto px-4 md:px-6 xl:px-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {mainProducts && mainProducts.length>0 ?
-                            (mainProducts.map(product => (
+                        {
+                        mainProducts && mainProducts.length>0 ? 
+                            (mainProducts.map(product => 
                                 <ProductCard key={product.id} product={sanitizeProduct(product)} likedProducts={likedProducts} handleLike={handleLike} addToCart={addToCart} />
-                            ))):(isError? (
+                            )):(isError? (
                                 <div className="text-center sm:col-span-2 md:col-span-12 flex justify-center text-pd-red">No data available. Check your network connection</div>
                             ):(
                                 <div className="flex justify-center col-span-12">
@@ -217,6 +243,7 @@ export default function Home() {
                                 </div>
                             ))
                         }
+                        
                     </div>
                 </section>
                 <section className="mt-28 lg:mt-36">

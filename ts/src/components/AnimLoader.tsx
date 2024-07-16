@@ -1,5 +1,5 @@
 const AnimLoader = () => {
-    let classes = 'h-2.5 w-2.5 bg-pd-mid-gray rounded-full';
+    const classes = 'h-2.5 w-2.5 bg-pd-mid-gray rounded-full';
 
     return (
         <div className='flex'>

@@ -1,14 +1,30 @@
-import propTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import tick from "../../assets/img/icons/tick_red.gif";
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { useEffect, useState } from 'react';
 import AnimLoader from '../AnimLoader';
 
-export default function ShowSuccess({showSuccess}) {
-  const navigate = useNavigate();  
-  const [cartItems, setCartItems] = useLocalStorage('cartItems', []);
-  const [likedProducts, setLikedProducts] = useLocalStorage('likedProducts', []);
+type ShowSuccessProps = {
+    showSuccess: boolean
+}
+
+type CartItem = {
+  id: string;
+  title: string;
+  desc: string;
+  photo: string;
+  photos: {url: string}[];
+  price: number;
+  discount: number;
+  rating: number;
+  quantity: number;
+};
+
+export default function ShowSuccess(props: ShowSuccessProps){
+  const {showSuccess} = props;
+  const navigate = useNavigate();
+  const [likedProducts, setLikedProducts] = useLocalStorage<string[]>("likedProducts", []);
+  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("cartItems", []);
   const finalize = () => {
     const updatedLikedProducts = likedProducts.filter(
       (likedItem) => !cartItems.some((cartItem) => cartItem.id === likedItem)
@@ -58,8 +74,4 @@ export default function ShowSuccess({showSuccess}) {
         <button disabled={!(completed && showSuccess)} onClick={()=>finalize()} className={`mt-10 mb-5 py-4 px-10 flex items-center justify-center gap-2 rounded-[3.25rem] font-medium pd-button font-montserrat  ${completed?' bg-pd-red with-shadow text-pd-white':'bg-pd-black/50 text-pd-white/50'}`}>Continue Shopping</button>
     </div>
   );
-}
-
-ShowSuccess.propTypes = {
-  showSuccess: propTypes.bool
 }

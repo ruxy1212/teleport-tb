@@ -1,41 +1,71 @@
-import propTypes from 'prop-types';
+// import propTypes from 'prop-types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Trailing from './icons/Trailing';
 import { getNextWeekFriday } from '../hooks/nextWeekFriday';
 
-export default function OrderSummary({total, discount, proceed_loc, proceed_msg, coupon=0, couponMsg="", showModal=null, selectedCard=null, billing=null, setBillingValidation=null, setCardValidation=null, showPopup=null}) {
-    const validCoupons = {"DISCOUNT10": 10, "SALE20": 20, "PROMO30": 30, "EREGE": 50, "RUXY": 50};
+type OrderSummaryProps = {
+    total: number,
+    discount: number,
+    proceed_msg: string,
+    proceed_loc: string,
+    coupon?: number,
+    couponMsg?: string,
+    showModal?: (showModal: boolean) => void,
+    selectedCard?: string|null,
+    billing?: {
+        firstName?: string,
+        lastName?: string,
+        email?: string,
+        phone?: string,
+        address?: string,
+    },
+    setBillingValidation?: (billingValidation: boolean) => void,
+    setCardValidation?: (cardValidation: boolean) => void,
+    showPopup?: (message: string) => void
+}
+
+const validCoupons: { [key: string]: number } = {
+    "DISCOUNT10": 10,
+    "SALE20": 20,
+    "PROMO30": 30,
+    "EREGE": 50,
+    "RUXY": 50
+  };
+
+export default function OrderSummary(props: OrderSummaryProps){
+    const {total, discount, proceed_loc, proceed_msg, coupon=0, couponMsg="", showModal=null, selectedCard=null, billing=null, setBillingValidation=null, setCardValidation=null, showPopup=null} = props;
     const [couponCode, setCoupon] = useState(couponMsg);
     const [couponFeedback, setCouponFeedback] = useState("");
     const [couponDiscount, setCouponDiscount] = useState(coupon);
     const navigate = useNavigate();  
     const applyCoupon = () => {
-        if (validCoupons[couponCode.toUpperCase()]) {
-          setCouponDiscount(validCoupons[couponCode.toUpperCase()]);
+        const upperCaseCoupon = couponCode.toUpperCase();
+        if (validCoupons[upperCaseCoupon]) {
+          setCouponDiscount(validCoupons[upperCaseCoupon]);
           setCouponFeedback("Coupon applied successfully!");
         } else {
           setCouponFeedback("Invalid or expired coupon code.");
           setCouponDiscount(0);
         }
-    };
+    };    
 
-    const proceed = (loc) => {
+    const proceed = (loc: string) => {
         if(loc == 'payment')
             navigate("/checkout", { state: { price: total, discount: discount, coupon: couponDiscount, couponMsg: couponCode.toUpperCase()  } });
         else{
-            if(selectedCard && Object.keys(billing).length>0)
-                showModal(true);
+            if(selectedCard && billing && Object.keys(billing).length > 0)
+                showModal && showModal(true);
             else{
                 if(!selectedCard){
-                    setCardValidation(true);
-                    showPopup("Please select a card for payment");
+                    setCardValidation && setCardValidation(true);
+                    showPopup && showPopup("Please select a card for payment");
                 }
-                if(Object.keys(billing).length<1){
-                    setBillingValidation(true);
-                    showPopup("Please add a billing address");
+                if(!billing || Object.keys(billing).length < 1){
+                    setBillingValidation && setBillingValidation(true);
+                    showPopup && showPopup("Please add a billing address");
                 }
-                showModal(false);
+                showModal && showModal(false);
             }
         }
     };
@@ -88,18 +118,18 @@ export default function OrderSummary({total, discount, proceed_loc, proceed_msg,
     )
 }
 
-OrderSummary.propTypes = {
-    total: propTypes.number,
-    discount: propTypes.number,
-    proceed: propTypes.func,
-    proceed_msg: propTypes.string,
-    proceed_loc: propTypes.string,
-    coupon: propTypes.number,
-    couponMsg: propTypes.string,
-    showModal: propTypes.func,
-    selectedCard: propTypes.string,
-    billing: propTypes.object,
-    setBillingValidation: propTypes.func,
-    setCardValidation: propTypes.func,
-    showPopup: propTypes.func
-}
+// OrderSummary.propTypes = {
+//     total: propTypes.number,
+//     discount: propTypes.number,
+//     proceed: propTypes.func,
+//     proceed_msg: propTypes.string,
+//     proceed_loc: propTypes.string,
+//     coupon: propTypes.number,
+//     couponMsg: propTypes.string,
+//     showModal: propTypes.func,
+//     selectedCard: propTypes.string,
+//     billing: propTypes.object,
+//     setBillingValidation: propTypes.func,
+//     setCardValidation: propTypes.func,
+//     showPopup: propTypes.func
+// }

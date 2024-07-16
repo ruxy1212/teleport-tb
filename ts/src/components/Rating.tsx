@@ -1,5 +1,4 @@
 import Star from "./icons/Star"
-import propTypes from 'prop-types'
 
 type RatingProps = {
     amount: number
@@ -11,8 +10,4 @@ export default function Rating(props: RatingProps) {
         <Star key={index} fill={index < starFill} />
     ));
     return <div>{stars}</div>
-}
-
-Rating.propTypes = {
-    amount: propTypes.number
 }

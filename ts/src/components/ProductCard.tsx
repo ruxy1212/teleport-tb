@@ -2,29 +2,22 @@ import Cart from './icons/Cart'
 import Rating from './Rating'
 import ProdFavorite from './icons/ProdFavorite'
 import { useState } from 'react';
-// import Product from './Product';
+import Product from './Product';
 
-
-// ProductCard.propTypes = {
-//     product: propTypes.object,
-//     likedProducts: propTypes.array,
-//     handleLike: propTypes.func,
-//     addToCart: propTypes.func
-// }
 type ProductCardProps = {
     product: {
         id: string
         title: string
         desc: string
         photo: string
-        photos: string[]
-        price: string
-        discount: string
+        photos: {url: string}[]
+        price: number
+        discount: number
         rating: number
     },
     likedProducts: string[]
-    handleLike: (product: ProductCardProps["product"]) => ProductCardProps["product"]["id"]
-    addToCart: (product: ProductCardProps["product"]) => ProductCardProps["product"]
+    handleLike: (product: ProductCardProps["product"]) => void
+    addToCart: (product: ProductCardProps["product"]) => void
 }
 
 export default function ProductCard(props: ProductCardProps) {
@@ -72,7 +65,7 @@ export default function ProductCard(props: ProductCardProps) {
                     <p>Add to Cart</p>
                 </button> 
             </div>
-            {/* <Product open={showProduct} setOpen={setShowProduct} product={product} addToCart={addToCart}/> */}
+            <Product open={showProduct} setOpen={setShowProduct} product={props.product} addToCart={props.addToCart}/>
         </div>
     )
 }

@@ -1,8 +1,14 @@
 import { useEffect } from 'react';
-import propTypes from 'prop-types';
 import Subtract from '../assets/img/icons/Subtract.svg';
 
-export default function Popup({ message, duration, onClose }){
+type PopupProps = {
+  message: string,
+  duration: number,
+  onClose: () => void
+}
+
+export default function Popup(props: PopupProps){
+    const { message, duration, onClose } = props;
     useEffect(() => {
       const timer = setTimeout(onClose, duration);
       return () => clearTimeout(timer);
@@ -15,8 +21,3 @@ export default function Popup({ message, duration, onClose }){
     );
 }
 
-Popup.propTypes = {
-    message: propTypes.string,
-    duration: propTypes.number,
-    onClose: propTypes.func
-}

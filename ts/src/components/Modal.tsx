@@ -1,13 +1,22 @@
-import propTypes from 'prop-types'
+// import propTypes from 'prop-types'
 import Close from "../assets/img/icons/Close.svg";
 import { useEffect, useRef } from 'react';
 
-export default function Modal({children, open, setOpen, canClose = true, canBlur = true}){
-    const modalRef = useRef(null);
+type ModalProps = {
+    children: React.ReactNode,
+    open: boolean,
+    setOpen: (open: boolean) => void,
+    canClose?: boolean,
+    canBlur?: boolean
+}
+
+export default function Modal(props: ModalProps) {
+    const {children, open, setOpen, canClose = true, canBlur = true} = props;
+    const modalRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
         if(canBlur){
-            const handleClickOutside = (event) => {
-                if (modalRef.current && !modalRef.current.contains(event.target)) {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
                   setOpen(false);
                 }
               };
@@ -51,10 +60,10 @@ export default function Modal({children, open, setOpen, canClose = true, canBlur
     )
 }
 
-Modal.propTypes = {
-    children: propTypes.node,
-    open: propTypes.bool,
-    setOpen: propTypes.func,
-    canClose: propTypes.bool,
-    canBlur: propTypes.bool
-}
+// Modal.propTypes = {
+//     children: propTypes.node,
+//     open: propTypes.bool,
+//     setOpen: propTypes.func,
+//     canClose: propTypes.bool,
+//     canBlur: propTypes.bool
+// }

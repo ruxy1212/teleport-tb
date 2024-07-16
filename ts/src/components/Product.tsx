@@ -1,4 +1,3 @@
-import propTypes from 'prop-types';
 import { useEffect, useState } from "react";
 import Close from "../assets/img/icons/Close.svg";
 import Popup from "./Popup"
@@ -10,46 +9,92 @@ import Cart from './icons/Cart';
 
 type ProductProps = {
     product: {
-        id: number,
-        title: string,
-        price: number,
-        discount: number,
-        rating: number,
-        photos: Array<{id: number, url: string}>,
-        description: string
+        id: string
+        title: string
+        desc: string
+        photo: string
+        photos: {url: string}[]
+        price: number
+        discount: number
+        rating: number
     },
-    addToCart: (product: props.product)=>{},
+    // likedProducts: string[]
+    // handleLike: (product: ProductCardProps["product"]) => void
+    addToCart: (product: ProductProps["product"]) => void
     open: boolean,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+type ExtraInfoItem = {
+    key: string;
+    value: string;
+  };
+
+type ExtraInfoProps = {
+    data: ExtraInfoItem[];
+    status: number;
+  };
+
+  type ExtraProps = {
+    battery?: string
+    resolution?: string 
+    ram?: string
+    capacity?: string
+    color?: string
+    description?: string
+    feedbacks?: string
+    quantity_available?: string
+  }
+
 export default function Product(props: ProductProps){
+    const {product, setOpen, open, addToCart} = props
     const baseURL = import.meta.env.VITE_TIMBU_PROD_IMG_BASE_URL;
     const [isError, setError] = useState(false);
-    const [extra, setExtra] = useState({});
+    const [extra, setExtra] = useState<ExtraProps>({});
     useEffect(() => {
-		const getProduct = async () => {
-			try {
-				const apiKey = import.meta.env.VITE_TIMBU_API_KEY;
-                const appId = import.meta.env.VITE_TIMBU_APP_ID;
-                const orgId = import.meta.env.VITE_TIMBU_ORG_ID;
-				const extraInfo = await axios.get(`/extrainfo/products/${product.id}?organization_id=${orgId}&Appid=${appId}&Apikey=${apiKey}&currency_code=USD`);
-				if (extraInfo.status === 200 ) {
-                    const result = extraInfo.data.reduce((acc, item) => {
-                        acc[item.key] = item.value;
-                        return acc;
-                    }, {});
-                    setExtra(result);
-					setError(false);
-				}
-			}catch(error){
-				console.error("Error fetching products:", error);
-				setError(true);
-			}
-		};
-        getProduct();
-
-        if (props.open) {
+		// const getProduct = async () => {
+		// 	try {
+		// 		const apiKey = import.meta.env.VITE_TIMBU_API_KEY;
+        //         const appId = import.meta.env.VITE_TIMBU_APP_ID;
+        //         const orgId = import.meta.env.VITE_TIMBU_ORG_ID;
+		// 		const extraInfo = await axios.get(`/extrainfo/products/${product.id}?organization_id=${orgId}&Appid=${appId}&Apikey=${apiKey}&currency_code=USD`);
+		// 		if (extraInfo.status === 200 ) {
+        //             const result = extraInfo.data.reduce((acc, item) => {
+        //                 acc[item.key] = item.value;
+        //                 return acc;
+        //             }, {});
+        //             setExtra(result);
+		// 			setError(false);
+		// 		}
+		// 	}catch(error){
+		// 		console.error("Error fetching products:", error);
+		// 		setError(true);
+		// 	}
+		// };
+        const apiKey = import.meta.env.VITE_TIMBU_API_KEY;
+        const appId = import.meta.env.VITE_TIMBU_APP_ID;
+        const orgId = import.meta.env.VITE_TIMBU_ORG_ID;
+        const fetchExtraInfo = async (productId: string, orgId: string, appId: string, apiKey: string) => {
+        try {
+            const extraInfo: ExtraInfoProps = await axios.get(`/extrainfo/products/${productId}?organization_id=${orgId}&Appid=${appId}&Apikey=${apiKey}&currency_code=USD`);
+            
+            if (extraInfo.status === 200) {
+            const result = extraInfo.data.reduce<Record<string, string>>((acc, item) => {
+                acc[item.key] = item.value;
+                return acc;
+            }, {});
+            
+            setExtra(result);
+            setError(false);
+            }
+        } catch (error) {
+            console.error(error);
+            setError(true);
+        }
+        };
+        // getProduct();
+        fetchExtraInfo(product.id, orgId, appId, apiKey);
+        if (open) {
             document.body.style.overflow = 'hidden';
           } else {
             document.body.style.overflow = 'auto';
@@ -57,7 +102,7 @@ export default function Product(props: ProductProps){
           return () => {
             document.body.style.overflow = 'auto';
           };
-	}, [product, props.open]);
+	}, [product, open]);
 
     const [message, setMessage] = useState(null);
     const [cIndex, setCIndex] = useState(0);
@@ -74,7 +119,7 @@ export default function Product(props: ProductProps){
         );
     }; 
     return (
-        <div className={`${props.open?'flex':'hidden'} fixed top-0 left-0 w-screen h-screen z-[90] bg-pd-black/60 justify-center items-center`}>
+        <div className={`${open?'flex':'hidden'} fixed top-0 left-0 w-screen h-screen z-[90] bg-pd-black/60 justify-center items-center`}>
             <div className="overflow-y-auto h-screen md:h-auto my-8 md:my-0 shadow-lg border border-black border-solid bg-pd-white rounded-xl">
                 <div className="p-4 md:p-6 pt-0 leading-[150%]">
                     <div className="flex justify-end pt-4 md:pt-6 pb-2 bg-pd-white z-20 sticky top-0 w-full">
